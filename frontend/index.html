@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Recommender</title>
+</head>
+<body>
+    <h1>Personalized Recipe Recommender</h1>
+    <form id="ingredients-form">
+        <label for="ingredients">Enter Ingredients (comma separated): </label>
+        <input type="text" id="ingredients" name="ingredients" required>
+        <button type="submit">Get Recipes</button>
+    </form>
+
+    <h2>Recommended Recipes:</h2>
+    <ul id="recipe-list"></ul>
+
+    <script>
+        document.getElementById('ingredients-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const ingredients = document.getElementById('ingredients').value.split(',');
+
+            const response = await fetch('http://127.0.0.1:5000/recommend', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ingredients })
+            });
+
+            const data = await response.json();
+            const recipeList = document.getElementById('recipe-list');
+            recipeList.innerHTML = '';
+
+            if (data.recipes) {
+                data.recipes.forEach(recipe => {
+                    const li = document.createElement('li');
+                    li.textContent = recipe.name;
+                    recipeList.appendChild(li);
+                });
+            } else {
+                recipeList.innerHTML = 'No recipes found.';
+            }
+        });
+    </script>
+</body>
+</html>
