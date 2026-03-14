@@ -1,4 +1,3 @@
-Sure! Here’s a professional `README.md` for your project:
 
 ````markdown
 # Personalized Recipe Recommender
